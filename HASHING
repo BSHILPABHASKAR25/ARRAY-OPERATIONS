@@ -1,0 +1,89 @@
+# include<stdio.h>
+# define m 10
+
+int HT[100];
+void store(int key,int hk)
+{
+    int i,pos=-1,flag=0;
+    if(HT[hk]==-1)
+    {
+        HT[hk]=key;
+        return;
+    }
+    for(i=hk+1;i<m;i++)//linear probing checking below hk
+    {
+        if(HT[i]==-1)
+        {
+            pos=i;
+            flag=1;
+            break;
+        }
+    }
+    if(flag==0)//if  ht is full below hk check above hk
+    {
+        for(i=0;i<hk;i++)
+        {
+            if(HT[i]==-1)
+            {
+                pos=i;
+                flag=1;
+                break;
+            }
+        }
+    }
+    
+    if(flag==0)
+    {
+        printf("table full");
+    }
+    else
+        HT[pos]=key;
+}
+
+void display()
+{
+    int i;
+    printf("\n hash table:");
+    for(i=0;i<m;i++)
+    {
+        printf("%2d|%4d|\n",i,HT[i]);
+        
+    }
+}
+
+
+int main()
+{
+    int key;
+    int hk;
+    int ch,i;
+    for(i=0;i<m;i++)
+        HT[i]=-1;
+    while(1)
+    {
+        printf("\n1.insert \n2.display\n 3 exit\n\n");
+        printf("choice:\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+                printf("enter key");
+                scanf("%4d",&key);
+                hk=key%m;
+                store(key,hk);
+                break;
+            case 2:
+                display();
+                break;
+            case 3:
+                return 0;
+                break;
+            default:
+                printf("invalid choice");
+                break;
+        }
+        
+    }
+}
+
+
