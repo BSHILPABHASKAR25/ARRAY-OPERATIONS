@@ -1,0 +1,158 @@
+#include<stdio.h>
+#include<stdlib.h>
+int flag=0;
+
+typedef struct BST
+{
+    int data;
+    struct BST *lchild,*rchild;
+}node;
+
+node *get_node()
+{
+    node *temp;
+    temp=(node*)malloc(sizeof(struct BST));
+    temp->lchild=NULL;
+    temp->rchild=NULL;
+    return (temp);
+    
+}
+
+void insert(node *root,node *new_node)
+{
+    if(new_node->data < root->data)
+    {
+        if(root->lchild==NULL)
+        {
+            root->lchild=new_node;
+        }
+        else
+        {
+            insert(root->lchild,new_node);
+        }
+    }
+    if(new_node->data > root->data)
+    {
+        if(root->rchild==NULL)
+        {
+            root->rchild=new_node;
+        }
+        else
+        {
+            insert(root->rchild,new_node);
+        }
+    }
+}
+
+node *search(node *root,int key,node **parent)
+{
+    node *temp;
+    temp=root;
+    while(temp !=NULL)
+    {
+      if(temp->data==key)
+      {
+        printf("\n FOUND!!");
+        flag=1;
+          return temp;
+       
+      }
+     *parent=temp;
+     if(temp->data >key)
+        temp=temp->lchild;
+     else
+        temp=temp->rchild;
+    }
+    return NULL;
+}
+
+void inorder(node *temp)
+{
+    if(temp!=NULL)
+    {
+        inorder(temp->lchild);
+        printf("\n%d",temp->data);
+        inorder(temp->rchild);
+    }
+}
+void preorders(node *temp)
+{
+    if(temp!=NULL)
+    {
+        printf("\n%d",temp->data);
+        preorders(temp->lchild);
+        preorders(temp->rchild);
+    }
+}
+
+void postorders(node *temp)
+{
+    if(temp!=NULL)
+    {
+        postorders(temp->lchild);
+        postorders(temp->rchild);
+        printf("\n%d",temp->data);
+    }
+}
+
+
+int main()
+{
+    int ch,key;
+    int ans=1;
+    node *root,*new_node,*tmp,*parent;
+    node *get_node();
+    root=NULL;
+    
+    do
+    {
+        printf("\n------------------\n");
+        printf("\n BST OPERATIONS");
+        printf("\n1.INSERT \n 2.search \n 3.recursive traversal\n");
+        printf("\n enter choice:");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+                  do
+                  {
+                      new_node=get_node();
+                      printf("\nENTER DATA:\t");
+                      scanf("%d",&new_node->data);
+                      if(root==NULL)
+                      {
+                          root=new_node;
+                      }
+                      else
+                          insert(root,new_node);
+                      printf("\ndo yopu wish to continue:(1/0):");
+                      scanf("%d",&ans);
+                  }while(ans);
+             break;
+             case 2:
+                printf("\n enter key:");
+                scanf("%d",&key);
+                tmp=search(root,key,&parent);
+                 if(flag==1)
+                 {
+                   printf("%d parent is %d",tmp->data,parent->data);
+                     
+                }
+                else
+                {
+                  printf("\n %d not found",key);
+                }
+                flag=0;
+                break;
+             case 3:
+                printf("\n inorder:");
+                inorder(root);
+                printf("\npreorder:");
+                preorders(root);
+                printf("\n postorder:");
+                postorders(root);
+                break;
+        }
+    }while(ch !=4);
+    return 0;
+}
