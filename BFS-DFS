@@ -1,0 +1,82 @@
+#include<stdio.h>
+int a[20][20],visited[20],reach[50];
+int i,j,f=0,r=-1,count=0,cq[20],n;
+
+void create()
+{
+    printf("\nENTER THE NUMBER OF CITIES:\n");
+    scanf("%d",&n);
+    printf("\nENTER VALUES IN MATRIX FORM:");
+    for(i=1;i<=n;i++)
+        for(j=1;j<=n;j++)
+            scanf("%d",&a[i][j]);
+    return;
+}
+
+void bfs(int v)
+{
+    for(i=1;i<=n;i++)
+        if(a[v][i] && !visited[i])
+            cq[++r]=i;
+    if(f<=r)
+    {
+        visited[cq[f]]=1;
+        bfs(cq[f++]);
+    }
+}
+
+void dfs(int v)
+{
+    int i;
+    reach[v]=1;
+    for(i=1;i<=n;i++)
+    {
+        if(a[v][i] && !reach[i])
+        {
+            printf("\n%d->%d",v,i);
+            count++;
+            dfs(i);
+        }
+    }
+}
+
+void main()
+{
+    int ch,v;
+    while(1)
+    {
+        printf("\n 1 CREATE \n 2 BFS \n 3.DFS \n 4.EXIT\n");
+        printf("\n ENTER CHOICE:");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+                create();
+                break;
+            case 2:
+                printf("\n ENTER SOURCE VERTEX:");
+                scanf("%d",&v);
+                for(i=1;i<n;i++)
+                    visited[i]=0;
+                visited[v]=1;
+                bfs(v);
+                printf("\nNODES REACHABLE ARE:\n");
+                for(i=1;i<n;i++)
+                    printf("\nNODE-->%d\n",i);
+                break;
+            case 3:
+                dfs(1);
+                if(count==n-1)
+                    printf("\nconnected!!");
+                else
+                    printf("\nnot connected!!");
+                break;
+            case 4:
+                break;
+            default:
+                printf("enter valid choice");
+                break;
+                
+        }
+    }
+}
