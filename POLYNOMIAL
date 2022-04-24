@@ -1,0 +1,118 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+ struct poly
+{
+    int cof,x,y,z;
+    struct poly *link;
+ };
+typedef struct poly *POLYNOMIAL;
+
+POLYNOMIAL create()
+{
+    POLYNOMIAL getnode;
+    getnode=(POLYNOMIAL)malloc(sizeof(struct poly));
+    if(getnode == NULL)
+    {
+        printf("no memeory");
+    }
+    return (getnode);
+}
+
+POLYNOMIAL insert(POLYNOMIAL head,int c,int px,int py,int pz)
+{
+    POLYNOMIAL node,temp;
+    node=create();
+    node->cof=c;
+    node->x=px;
+    node->y=py;
+    node->z=pz;
+    node->link=NULL;
+    temp=head->link;
+    while(temp->link !=head)
+    {
+        temp=temp->link;
+        
+    }
+    temp->link=node;
+    node->link=head;
+    return head;
+}
+
+POLYNOMIAL inputp(POLYNOMIAL head)
+{
+    int c,px,py,pz,i;
+    
+    for(i=1;;i++)
+    {
+        printf("\n enter coef:%d",i);
+        scanf("%d",&c);
+        if(c==999)
+            break;
+        
+        printf("\n x\t");
+        scanf("%d",&px);
+        printf("\n y\t");
+        scanf("%d",&py);
+        printf("\n z\t");
+        scanf("%d",&pz);
+        head=insert(head,c,px,py,pz);
+      
+    }
+    
+    return head;
+    
+}
+
+POLYNOMIAL display(POLYNOMIAL head)
+{
+    POLYNOMIAL temp;
+    if(head->link==head)
+    {
+        printf("\n emopty");
+        return 0;
+    }
+    temp=head->link;
+    while(temp !=head)
+    {
+        printf("\n%d x ^ %d y ^ %d z ^ %d",temp->cof,temp->x,temp->y,temp->z);
+        temp=temp->link;
+    }
+    return 0;
+}
+
+int eval(POLYNOMIAL head)
+{
+    int vx,vy,vz;
+    POLYNOMIAL temp;
+    int sum=0;
+    printf("\n enter values of x y z:");
+    scanf("%d %d %d",&vx,&vy,&vz);
+    temp=head->link;
+    while(temp !=head)
+    {
+        sum=sum+(temp->cof * pow(vx,temp->x)* pow(vy,temp->y)* pow(vz,temp->z));
+        temp=temp->link;
+    }
+    return sum;
+}
+
+int main()
+{
+    POLYNOMIAL head;
+    int res;
+    head=create();
+    head->link=head;
+    printf("\n enter poly:\t");
+    head =inputp(head);
+    printf("\n the poly is:\t");
+    display(head);
+    res=eval(head);
+    printf("\n res:%d\t",res);
+    return 0;
+    
+    
+}
+
+
+
