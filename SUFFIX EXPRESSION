@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<string.h>
+# include<math.h>
+int top=-1;
+int s[20];
+char post[20];
+
+//function prototype
+void pushstack(int temp);
+void calculator(char c);
+
+void main()
+{
+  printf("ENTER POST EXP:\n");
+  scanf("%s",post);
+  for(int i=0;i<strlen(post);i++)
+    {
+      if(post[i]>='0'&&post[i]<='9')
+      {
+        pushstack(i);
+      }
+      if((post[i]=='+')||(post[i]=='-')||(post[i]=='*')||(post[i]=='/')||(post[i]=='%')||(post[i]=='^'))
+      {
+        calculator(post[i]);
+      }
+    }
+  printf("ans:%d\n",s[top]);
+  
+}
+
+void pushstack(int temp)
+{
+  top=top+1;
+  s[top]=(int)(post[temp]-48);
+}
+
+void calculator(char c)
+{
+  int a,b,ans;
+  a=s[top];
+  top=top-1;
+  b=s[top];
+  top=top-1;
+  switch(c)
+    {
+      case '+':
+          ans=b+a;
+          break;
+      case '-':
+          ans=b-a;
+          break;
+      case '*':
+          ans=b*a;
+          break;
+      case '/':
+          ans=b/a;
+          break;
+      case '%':
+          ans=b%a;
+          break;
+      case '^':
+          ans=pow(b,a);
+          break;
+    }
+  top++;
+  s[top]=ans;
+}
