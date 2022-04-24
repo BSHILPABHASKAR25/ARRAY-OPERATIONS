@@ -1,0 +1,168 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+ struct poly
+{
+    int cof,x,y,z;
+    struct poly *link;
+ };
+typedef struct poly *POLYNOMIAL;
+
+POLYNOMIAL create()
+{
+    POLYNOMIAL getnode;
+    getnode=(POLYNOMIAL)malloc(sizeof(struct poly));
+    if(getnode == NULL)
+    {
+        printf("no memeory");
+    }
+    return (getnode);
+}
+
+POLYNOMIAL insert(POLYNOMIAL head,int c,int px,int py,int pz)
+{
+    POLYNOMIAL node,temp;
+    node=create();
+    node->cof=c;
+    node->x=px;
+    node->y=py;
+    node->z=pz;
+    node->link=NULL;
+    temp=head->link;
+    while(temp->link !=head)
+    {
+        temp=temp->link;
+        
+    }
+    temp->link=node;
+    node->link=head;
+    return head;
+}
+
+POLYNOMIAL inputp(POLYNOMIAL head)
+{
+    int c,px,py,pz,i;
+    printf("\nenter 999 to end of poly");
+    for(i=1;;i++)
+    {
+        printf("\n enter coef:%d",i);
+        scanf("%d",&c);
+        if(c==999)
+            break;
+        
+        printf("\n x\t");
+        scanf("%d",&px);
+        printf("\n y\t");
+        scanf("%d",&py);
+        printf("\n z\t");
+        scanf("%d",&pz);
+        head=insert(head,c,px,py,pz);
+      
+    }
+    
+    
+    return head;
+    
+}
+
+void display(POLYNOMIAL head)
+{
+    POLYNOMIAL temp;
+   
+    if(head->link == head)
+    {
+        printf("\n empty");
+        return ;
+    }
+    temp=head->link;
+    while(temp !=head)
+    {
+        printf("\n%d x ^ %d y ^ %d z ^ %d",temp->cof,temp->x,temp->y,temp->z);
+        temp=temp->link;
+    }
+    printf("+999");
+    
+}
+
+POLYNOMIAL polysum(POLYNOMIAL head1,POLYNOMIAL head2,POLYNOMIAL head)
+{
+    POLYNOMIAL p1,p2;
+    int c,c1,c2,x1,y1,z1,x2,y2,z2,flag=0;
+    p1=head1->link;
+    while(p1 !=head1)
+    {
+        c1=p1->cof;
+        x1=p1->x;
+        y1=p1->y;
+        z1=p1->z;
+        
+        p2=head2->link;
+        flag=0;
+        while(p2 !=head2)
+        {
+            c2=p2->cof;
+            x2=p2->x;
+            y2=p2->y;
+            z2=p2->z;
+            
+            if((x1==x2)&&(y1==y2)&&(z1==z2))
+            {
+                head=insert(head,c1+c2,x1,y1,z1);
+                p2->cof=0;
+                flag=1;
+                break;
+                
+            }
+            else
+                p2=p2->link;
+        
+        }
+            if(flag==0)
+                head=insert(head,c1,x1,y1,z1);
+            p1=p1->link;
+                
+    }
+    p2=head2->link;
+    while(p2 !=head2)
+    {
+        if(p2->cof !=0)
+            head=insert(head,c2,x2,y2,z2);
+        p2=p2->link;
+    
+    }
+    return head;
+ }
+
+
+int main()
+{
+    POLYNOMIAL head1,head2,head;
+    head1=create();
+    head1->link=head1;
+    head2=create();
+    head2->link=head2;
+    head=create();
+    head->link=head;
+    
+    
+    
+    printf("\n enter poly 1:\t");
+    head1=inputp(head1);
+    display(head1);
+    printf("\n enter poly 2:\t");
+    head2=inputp(head2);
+    display(head2);
+    
+    head=polysum(head1,head2,head);
+    printf("\n sum:\t");
+    display(head);
+    return 0;
+    
+    
+    
+    
+}
+
+
+
+
