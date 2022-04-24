@@ -1,0 +1,121 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 50
+int top=-1;
+int s[MAX];
+
+void push(int elem)
+{
+    if(top==(MAX-1))
+    {
+        printf("overfloww");
+    }
+    else{
+        top=top+1;
+        s[top]=elem;
+    }
+}
+
+int pop()
+{
+    int del;
+    if(top==-1)
+    {
+        printf("underfloww");
+    }
+    else{
+        del=s[top];
+        top=top-1;
+        return (del);
+    }
+    return 0;
+}
+
+void pali()
+{
+    int p[20];
+    int i,n,flag=0;
+    
+    printf("enter the number of digits");
+    scanf("%d",&n);
+    printf("enter the digits");
+    for(i=0;i<n;i++)
+    {
+        scanf("%d",&p[i]);
+    }
+    
+    for(i=0;i<n;i++)
+        push(p[i]);
+    
+    for(i=0;i<n;i++)
+    {
+        if(p[i]==pop())
+        {
+            flag=1;
+            break;
+        }
+    }
+    if(flag==1)
+    {
+        printf("pali!!");
+    }
+    else
+    {
+        printf("not palii");
+    }
+}
+
+void display()
+{
+    int i;
+    if(top==-1)
+    {
+        printf("empty");
+    }
+    else
+    {
+        for(i=top;i>=0;i--)
+        {
+            printf("%d\t",s[i]);
+        }
+            
+    }
+}
+int main()
+{
+    int choice=1,elem,del;
+    while(choice)
+    {
+        printf("\n-------------------\n");
+        printf("\n1.push \n 2.pop \n 3 pali\n 4 display \n 5 exit\n");
+        printf("\n-------------------\n");
+        printf("enter choice");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+                printf("\nenter element:\t");
+                scanf("%d",&elem);
+                push(elem);
+                break;
+            case 2:
+                del=pop();
+                printf("deleted is %d:\t",del);
+                break;
+            case 3:
+                pali();
+                break;
+            case 4:
+                display();
+                break;
+            case 5:
+                break;
+            default:
+                printf("enter valid choice");
+                break;
+            
+        }
+    }
+    return 0;
+}
+
