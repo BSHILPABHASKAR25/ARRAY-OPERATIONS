@@ -1,0 +1,208 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct student
+{
+    char usn[20];
+    char name[30];
+    char branch[10];
+    int sem;
+    int phno;
+    struct student *link;
+};
+typedef struct student *STUDENT;
+STUDENT start=NULL;
+
+STUDENT create(void)
+{
+    STUDENT getnode;
+    getnode=(STUDENT)malloc(sizeof(struct student));
+    if(getnode==NULL)
+    {
+        printf("memory not allocated");
+        return 0;
+    }
+    printf("\nSLL OPERATIONS ARE\n");
+    printf("ENTER STUDENTS DETAILS:\n");
+    printf("\nUSN\t");
+    scanf("%s",getnode->usn);
+    printf("\nNAME:\t");
+    scanf("%s",getnode->name);
+    printf("\nBRANCH:\t");
+    scanf("%s",getnode->branch);
+    printf("\n SEM:\t");
+    scanf("%d",&getnode->sem);
+    printf("\n PHONE NO:\t");
+    scanf("%d",&getnode->phno);
+    
+    getnode->link=NULL;
+    return (getnode);
+}
+
+void create_list(void)
+{
+    STUDENT node;
+    int n,i;
+    printf("\n ENTER NUMBEER OF STUDENTS:\t");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        node = create();
+        if(start==NULL)
+        {
+            start=node;
+        }
+        else
+        {
+            node->link=start;
+            start=node;
+        }
+    }
+}
+
+void status(void)
+{
+    int count=0;
+    STUDENT temp;
+    if(start==NULL)
+    {
+        printf("\nLIST EMPTY\n");
+      
+    }
+    else
+    {
+        temp=start;
+        printf("the students are:\n\n");
+        while(temp!=NULL)
+        {
+            printf("%s %s %s %d %d",temp->usn,temp->name,temp->branch,temp->sem,temp->phno);
+            temp=temp->link;
+            count++;
+            
+        }
+        printf("\n the number of students are: %d",count);
+    }
+}
+
+void insert_end(void)
+{
+    STUDENT node,temp;
+    node=create();
+    if(start==NULL)
+    {
+        start=node;
+    }
+    else
+    {
+        temp=start;
+        while(temp->link!=NULL)
+        {
+            temp=temp->link;
+        }
+        temp->link=node;
+    }
+}
+
+void delete_end(void)
+{
+    STUDENT temp,prev;
+    temp=start;
+    if(temp==NULL)
+    {
+        printf("\n LIST EMPTY");
+        
+    }
+    else if(temp->link==NULL)
+    {
+        printf("\n deleted usn is %s",temp->usn);
+        free(temp);
+        start=NULL;
+    }
+    else
+    {
+        while(temp->link !=NULL)
+        {
+          prev=temp;
+          temp=temp->link;
+        }
+       printf("\n deleted usn is %s",temp->usn);
+        free(temp);
+        prev->link=NULL;
+        
+   }
+}
+
+void insert_front(void)
+{
+    STUDENT node;
+    node=create();
+    if(start==NULL)
+    {
+        start=node;
+    }
+    else
+    {
+        node->link=start;
+        start=node;
+  }
+}
+ void dlelete_front(void)
+{
+     STUDENT temp;
+     temp=start;
+     if(temp==NULL)
+     {
+         printf("\n LIST EMPTY");
+         
+     }
+     else if(temp->link==NULL)
+     {
+         printf("\n deleted usn is %s",temp->usn);
+         free(temp);
+         start=NULL;
+     }
+     else{
+         start=temp->link;
+         printf("\n deleted usn is %s",temp->usn);
+         free(temp);
+     }
+ }
+
+int main()
+{
+    int ch;
+    while(1)
+    {
+        printf("\n----------------------------\n");
+        printf("\n 1.create list \n 2.status \n 3.insert end \n 4delete end \n 5insert front \n 6.delet front \n 7.exit\n");
+        printf("enter choice:\t");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+                create_list();
+                break;
+            case 2:
+                status();
+                break;
+            case 3:
+                insert_end();
+                break;
+            case 4:
+                delete_end();
+                break;
+            case 5:
+                insert_front();
+                break;
+            case 6:
+                dlelete_front();
+                break;
+            case 7:
+                return 0;
+            default:
+                printf("invalid choice");
+                break;
+                
+        }
+    }
+    return 0;
+}
